@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Class 9 Study Hub - notes, tasks, timer, quizzes and progress tracking">
+  <title>Class 9 Study Hub</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #687386;
+      --primary: #4f46e5;
+      --primary-dark: #3730a3;
+      --border: #e4e7ec;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --shadow: 0 10px 30px rgba(20, 30, 50, 0.08);
+    }
+
+    body.dark {
+      --bg: #10131a;
+      --card: #181d27;
+      --text: #f3f4f6;
+      --muted: #a8b0bf;
+      --primary: #818cf8;
+      --primary-dark: #6366f1;
+      --border: #2b3342;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background 0.25s, color 0.25s;
+    }
+
+    header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar {
+      max-width: 1200px;
+      margin: auto;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      padding: 10px 15px;
+      font-size: 14px;
+      font-weight: 700;
+      background: var(--primary);
+      color: white;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    button.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    button.danger {
+      background: var(--danger);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 30px 20px 60px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      border-radius: 22px;
+      padding: 35px;
+      margin-bottom: 25px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 44px);
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      opacity: 0.9;
+      max-width: 700px;
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat .number {
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+
+    .stat p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .section h2 {
+      font-size: 21px;
+    }
+
+    .subjects {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .subject {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--bg);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .subject:hover {
+      transform: translateY(-3px);
+      border-color: var(--primary);
+    }
+
+    .subject-icon {
+      font-size: 30px;
+      margin-bottom: 12px;
+    }
+
+    .subject h3 {
+      margin-bottom: 5px;
+    }
+
+    .subject p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      border-radius: 10px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--primary);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .form-row > * {
+      flex: 1;
+    }
+
+    .task-list,
+    .notes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .task,
+    .note {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .task-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .task.completed .task-title {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
+    .task-actions,
+    .note-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .small-btn {
+      padding: 7px 10px;
+      font-size: 12px;
+    }
+
+    .timer {
+      text-align: center;
+    }
+
+    .timer-display {
+      font-size: clamp(55px, 10vw, 90px);
+      font-weight: 800;
+      color: var(--primary);
+      margin: 15px 0;
+      letter-spacing: 2px;
+    }
+
+    .timer-controls {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .progress-bar {
+      height: 13px;
+      background: var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 12px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      transition: width 0.3s;
+    }
+
+    .quiz-question {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .quiz-option {
+      text-align: left;
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .quiz-option:hover {
+      border-color: var(--primary);
+      background: var(--bg);
+    }
+
+    .quiz-result {
+      margin-top: 15px;
+      font-weight: 700;
+    }
+
+    .empty {
+      color: var(--muted);
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .grid,
+      .subjects {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .two-column {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .navbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .grid,
+      .subjects {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 25px;
+      }
+
+      .form-row {
+        flex-direction: column;
+      }
+
+      .task,
+      .note {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .task-actions,
+      .note-actions {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <nav class="navbar">
+    <div class="logo">📚 Class 9 Study Hub</div>
+
+    <div class="nav-buttons">
+      <button class="secondary" onclick="scrollToSection('subjects')">
+        Subjects
+      </button>
+
+      <button class="secondary" onclick="scrollToSection('tasks')">
+        Tasks
+      </button>
+
+      <button class="secondary" onclick="toggleDarkMode()">
+        🌙 Dark Mode
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero">
+    <h1>Study smarter. Not harder. 🎯</h1>
+    <p>
+      Your personal Class 9 Study Hub for organizing subjects,
+      making notes, completing tasks, taking quizzes and staying focused.
+    </p>
+  </section>
+
+  <!-- Statistics -->
+  <section class="grid">
+
+    <div class="stat">
+      <div class="number" id="totalTasks">0</div>
+      <p>Total Tasks</p>
+    </div>
+
+    <div class="stat">
+      <div class="number" id="completedTasks">0</div>
+      <p>Completed Tasks</p>
+    </div>
+
+    <div class="stat">
+      <div class="number" id="totalNotes">0</div>
+      <p>Saved Notes</p>
+    </div>
+
+    <div class="stat">
+      <div class="number" id="studyPercentage">0%</div>
+      <p>Study Progress</p>
+    </div>
+
+  </section>
+
+  <!-- Subjects -->
+  <section class="section" id="subjects">
+
+    <div class="section-header">
+      <h2>📚 My Subjects</h2>
+    </div>
+
+    <div class="subjects">
+
+      <div class="subject" onclick="selectSubject('Physics')">
+        <div class="subject-icon">⚡</div>
+        <h3>Physics</h3>
+        <p>Forces, motion, energy & more</p>
+      </div>
+
+      <div class="subject" onclick="selectSubject('Chemistry')">
+        <div class="subject-icon">🧪</div>
+        <h3>Chemistry</h3>
+        <p>Atoms, bonding, reactions & more</p>
+      </div>
+
+      <div class="subject" onclick="selectSubject('Computer Science')">
+        <div class="subject-icon">💻</div>
+        <h3>Computer Science</h3>
+        <p>Algorithms, networks & computing</p>
+      </div>
+
+      <div class="subject" onclick="selectSubject('English')">
+        <div class="subject-icon">📖</div>
+        <h3>English</h3>
+        <p>Grammar, writing & literature</p>
+      </div>
+
+      <div class="subject" onclick="selectSubject('Mathematics')">
+        <div class="subject-icon">📐</div>
+        <h3>Mathematics</h3>
+        <p>Algebra, geometry & calculations</p>
+      </div>
+
+      <div class="subject" onclick="selectSubject('Biology')">
+        <div class="subject-icon">🧬</div>
+        <h3>Biology</h3>
+        <p>Cells, organisms & life sciences</p>
+      </div>
+
+      <div class="subject" onclick="selectSubject('Pakistan Studies')">
+        <div class="subject-icon">🇵🇰</div>
+        <h3>Pakistan Studies</h3>
+        <p>History, geography & Pakistan</p>
+      </div>
+
+      <div class="subject" onclick="selectSubject('Islamiyat')">
+        <div class="subject-icon">☪️</div>
+        <h3>Islamiyat</h3>
+        <p>Quran, Hadith & Islamic studies</p>
+      </div>
+
+    </div>
+
+    <p id="selectedSubject" style="margin-top:15px;color:var(--primary);font-weight:700;"></p>
+
+  </section>
+
+  <div class="two-column">
+
+    <!-- Tasks -->
+    <section class="section" id="tasks">
+
+      <div class="section-header">
+        <h2>✅ Study Tasks</h2>
+      </div>
+
+      <div class="form-row">
+        <input
+          id="taskInput"
+          type="text"
+          placeholder="e.g. Revise Chemistry Chapter 5"
+        >
+
+        <select id="taskSubject">
+          <option>Physics</option>
+          <option>Chemistry</option>
+          <option>Computer Science</option>
+          <option>English</option>
+          <option>Mathematics</option>
+          <option>Biology</option>
+          <option>Pakistan Studies</option>
+          <option>Islamiyat</option>
+        </select>
+
+        <button onclick="addTask()">Add</button>
+      </div>
+
+      <div id="taskList" class="task-list"></div>
+
+    </section>
+
+    <!-- Notes -->
+    <section class="section">
+
+      <div class="section-header">
+        <h2>📝 Quick Notes</h2>
+      </div>
+
+      <input
+        id="noteTitle"
+        type="text"
+        placeholder="Note title"
+        style="margin-bottom:10px;"
+      >
+
+      <textarea
+        id="noteText"
+        placeholder="Write your study notes here..."
+      ></textarea>
+
+      <button onclick="addNote()" style="margin-top:10px;">
+        Save Note
+      </button>
+
+      <div id="notesList" class="notes-list"></div>
+
+    </section>
+
+  </div>
+
+  <!-- Pomodoro -->
+  <section class="section timer">
+
+    <h2>⏱️ Pomodoro Study Timer</h2>
+
+    <div class="timer-display" id="timerDisplay">
+      25:00
+    </div>
+
+    <div class="timer-controls">
+      <button onclick="startTimer()">Start</button>
+      <button onclick="pauseTimer()" class="secondary">Pause</button>
+      <button onclick="resetTimer()" class="secondary">Reset</button>
+      <button onclick="setBreak()" class="secondary">5 Min Break</button>
+    </div>
+
+    <p id="timerStatus" style="margin-top:15px;color:var(--muted);">
+      Ready to study!
+    </p>
+
+  </section>
+
+  <!-- Progress -->
+  <section class="section">
+
+    <div class="section-header">
+      <h2>📈 Study Progress</h2>
+      <strong id="progressText">0%</strong>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <p style="color:var(--muted);">
+      Complete your study tasks to increase your progress.
+    </p>
+
+  </section>
+
+  <!-- Quiz -->
+  <section class="section">
+
+    <div class="section-header">
+      <h2>🧠 Quick Quiz</h2>
+      <button onclick="nextQuestion()">Next Question</button>
+    </div>
+
+    <div id="quizArea"></div>
+
+  </section>
+
+</main>
+
+<footer>
+  Class 9 Study Hub • Keep learning, keep improving 🚀
+</footer>
+
+<script>
+
+  /* =========================
+     STORAGE
+  ========================= */
+
+  let tasks = JSON.parse(localStorage.getItem("studyTasks")) || [];
+  let notes = JSON.parse(localStorage.getItem("studyNotes")) || [];
+
+  function saveData() {
+    localStorage.setItem("studyTasks", JSON.stringify(tasks));
+    localStorage.setItem("studyNotes", JSON.stringify(notes));
+  }
+
+
+  /* =========================
+     SUBJECTS
+  ========================= */
+
+  function selectSubject(subject) {
+    document.getElementById("selectedSubject").textContent =
+      "Selected subject: " + subject;
+
+    document.getElementById("taskSubject").value = subject;
+  }
+
+
+  /* =========================
+     TASKS
+  ========================= */
+
+  function addTask() {
+
+    const input = document.getElementById("taskInput");
+    const subject = document.getElementById("taskSubject");
+
+    const title = input.value.trim();
+
+    if (!title) {
+      alert("Please enter a task.");
+      return;
+    }
+
+    tasks.push({
+      id: Date.now(),
+      title: title,
+      subject: subject.value,
+      completed: false
+    });
+
+    input.value = "";
+
+    saveData();
+    renderTasks();
+    updateStats();
+  }
+
+
+  function toggleTask(id) {
+
+    tasks = tasks.map(task => {
+
+      if (task.id === id) {
+        return {
+          ...task,
+          completed: !task.completed
+        };
+      }
+
+      return task;
+    });
+
+    saveData();
+    renderTasks();
+    updateStats();
+  }
+
+
+  function deleteTask(id) {
+
+    tasks = tasks.filter(task => task.id !== id);
+
+    saveData();
+    renderTasks();
+    updateStats();
+  }
+
+
+  function renderTasks() {
+
+    const list = document.getElementById("taskList");
+
+    if (tasks.length === 0) {
+      list.innerHTML = '<div class="empty">No tasks yet. Add your first study task!</div>';
+      return;
+    }
+
+    list.innerHTML = tasks.map(task => {
+
+      return `
+        <div class="task ${task.completed ? "completed" : ""}">
+
+          <div class="task-left">
+
+            <input
+              type="checkbox"
+              ${task.completed ? "checked" : ""}
+              onchange="toggleTask(${task.id})"
+              style="width:auto;"
+            >
+
+            <div>
+              <div class="task-title">${escapeHTML(task.title)}</div>
+              <small style="color:var(--muted);">
+                ${escapeHTML(task.subject)}
+              </small>
+            </div>
+
+          </div>
+
+          <div class="task-actions">
+
+            <button
+              class="small-btn danger"
+              onclick="deleteTask(${task.id})"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+  }
+
+
+  /* =========================
+     NOTES
+  ========================= */
+
+  function addNote() {
+
+    const titleInput = document.getElementById("noteTitle");
+    const textInput = document.getElementById("noteText");
+
+    const title = titleInput.value.trim();
+    const text = textInput.value.trim();
+
+    if (!title || !text) {
+      alert("Please enter both a title and note.");
+      return;
+    }
+
+    notes.push({
+      id: Date.now(),
+      title: title,
+      text: text
+    });
+
+    titleInput.value = "";
+    textInput.value = "";
+
+    saveData();
+    renderNotes();
+    updateStats();
+  }
+
+
+  function deleteNote(id) {
+
+    notes = notes.filter(note => note.id !== id);
+
+    saveData();
+    renderNotes();
+    updateStats();
+  }
+
+
+  function renderNotes() {
+
+    const list = document.getElementById("notesList");
+
+    if (notes.length === 0) {
+      list.innerHTML = '<div class="empty">No notes saved yet.</div>';
+      return;
+    }
+
+    list.innerHTML = notes.map(note => {
+
+      return `
+        <div class="note">
+
+          <div>
+            <strong>${escapeHTML(note.title)}</strong>
+
+            <p style="margin-top:6px;color:var(--muted);white-space:pre-wrap;">
+              ${escapeHTML(note.text)}
+            </p>
+          </div>
+
+          <div class="note-actions">
+
+            <button
+              class="small-btn danger"
+              onclick="deleteNote(${note.id})"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+  }
+
+
+  /* =========================
+     STATISTICS
+  ========================= */
+
+  function updateStats() {
+
+    const total = tasks.length;
+
+    const completed = tasks.filter(
+      task => task.completed
+    ).length;
+
+    const percentage = total === 0
+      ? 0
+      : Math.round((completed / total) * 100);
+
+    document.getElementById("totalTasks").textContent = total;
+    document.getElementById("completedTasks").textContent = completed;
+    document.getElementById("totalNotes").textContent = notes.length;
+
+    document.getElementById("studyPercentage").textContent =
+      percentage + "%";
+
+    document.getElementById("progressText").textContent =
+      percentage + "%";
+
+    document.getElementById("progressFill").style.width =
+      percentage + "%";
+  }
+
+
+  /* =========================
+     POMODORO TIMER
+  ========================= */
+
+  let timerSeconds = 25 * 60;
+  let timerInterval = null;
+
+  function updateTimerDisplay() {
+
+    const minutes = Math.floor(timerSeconds / 60);
+    const seconds = timerSeconds % 60;
+
+    document.getElementById("timerDisplay").textContent =
+      String(minutes).padStart(2, "0") +
+      ":" +
+      String(seconds).padStart(2, "0");
+  }
+
+
+  function startTimer() {
+
+    if (timerInterval !== null) {
+      return;
+    }
+
+    document.getElementById("timerStatus").textContent =
+      "Focus mode: study! 📚";
+
+    timerInterval = setInterval(() => {
+
+      if (timerSeconds <= 0) {
+
+        clearInterval(timerInterval);
+        timerInterval = null;
+
+        document.getElementById("timerStatus").textContent =
+          "Time's up! Take a break 🎉";
+
+        alert("Study session complete! Take a short break.");
+
+        return;
+      }
+
+      timerSeconds--;
+      updateTimerDisplay();
+
+    }, 1000);
+  }
+
+
+  function pauseTimer() {
+
+    clearInterval(timerInterval);
+    timerInterval = null;
+
+    document.getElementById("timerStatus").textContent =
+      "Timer paused.";
+  }
+
+
+  function resetTimer() {
+
+    clearInterval(timerInterval);
+    timerInterval = null;
+
+    timerSeconds = 25 * 60;
+
+    updateTimerDisplay();
+
+    document.getElementById("timerStatus").textContent =
+      "Ready to study!";
+  }
+
+
+  function setBreak() {
+
+    clearInterval(timerInterval);
+    timerInterval = null;
+
+    timerSeconds = 5 * 60;
+
+    updateTimerDisplay();
+
+    document.getElementById("timerStatus").textContent =
+      "Break time ☕";
+  }
+
+
+  /* =========================
+     QUIZ
+  ========================= */
